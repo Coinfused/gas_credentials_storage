@@ -71,33 +71,31 @@ var STORE_LIB = ( function ( space, timeout ) {
   
   
   STORE_LIB.prototype.put = function ( key, arg ) {
-        
+
     if (_.isArray( arg ) && _.isArray( key ) ) return this.putMany ( key, arg )
-    
     else if (  _.isString(arg) || _.isObject (arg) ) return this.putOne ( key, arg )
-    
     else throw "Can't read the arguments";
     
   };
   
   
   STORE_LIB.prototype.putOne = function ( key, value ) {
-    
+
     // Stringify the value if is an object.
     var self = this, value = ( _.isObject( value ) ) ? JSON.stringify ( value ) : value;
     
     // Cache and save in prop the key/value pair.
-    self.cache_().put ( key, value, self.timeout_ () );
+    var cache =  self.cache_().put ( key, value, self.timeout_ () );
     
-    self.props_().setProperty ( key, value );
+    var prop = self.props_().setProperty ( key, value );
     
-    return;
+    return self.cache_().get ( key );
     
   };
   
   
   STORE_LIB.prototype.putMany = function ( keys, values ) {
-    
+
     var self = this;
     
     // For  each value, stringify if it is an object and save in prop and cache.
@@ -110,9 +108,9 @@ var STORE_LIB = ( function ( space, timeout ) {
       var prop = self.props_().setProperty ( keys[index], value );
       
     });
-    
-    return;
-    
+      
+    return self.cache_ ( ).getAll ( keys );
+      
   };
   
   

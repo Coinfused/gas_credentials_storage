@@ -53,7 +53,7 @@ var HMAC_LIB = (function ( service, default_scope ) {
   HMAC_LIB.prototype.get = function ( scope ) {
     
     var self = this, scope = self.getScope_ ( scope );
-    
+        
     var value = this.store_.get ( self.service_ + "/hmac/" + scope )
         
     return ( _.isString( JSON.parse(value) ) ) ? value : JSON.parse( value );
@@ -61,7 +61,7 @@ var HMAC_LIB = (function ( service, default_scope ) {
   };
   
   
-  HMAC_LIB.prototype.getkey = function ( scope ) {
+  HMAC_LIB.prototype.getKey = function ( scope ) {
     
     var key = this.get( scope )["key"];
     
@@ -77,6 +77,7 @@ var HMAC_LIB = (function ( service, default_scope ) {
     var secret = this.get( scope )["secret"];
     
     if ( _.isNull( secret ) ) throw "Secret is missing"
+    
     else return secret;
 
   };
